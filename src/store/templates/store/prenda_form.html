@@ -87,12 +87,24 @@
                             </div>
                         </div>
 
-                        <!-- Estado Disponible -->
-                        <div class="form-check form-switch mb-3 mt-2">
-                            {{ form.disponible }}
-                            <label class="form-check-label fw-semibold text-secondary" for="{{ form.disponible.id_for_label }}">
-                                {{ form.disponible.label }}
-                            </label>
+                        <!-- Estado Disponible y Activo -->
+                        <div class="row g-3 mb-3 mt-1">
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    {{ form.disponible }}
+                                    <label class="form-check-label fw-semibold text-secondary" for="{{ form.disponible.id_for_label }}">
+                                        {{ form.disponible.label }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    {{ form.activo }}
+                                    <label class="form-check-label fw-semibold text-secondary" for="{{ form.activo.id_for_label }}">
+                                        {{ form.activo.label }}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Descripción -->

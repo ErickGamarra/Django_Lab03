@@ -75,6 +75,11 @@ class PrendaForm(forms.Form):
         initial=True,
         label="Disponible para venta"
     )
+    activo = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Activo en el catálogo (Habilitado)"
+    )
     descripcion = forms.CharField(
         required=False,
         label="Descripción",

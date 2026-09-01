@@ -16,11 +16,18 @@
             <div class="card border-0 shadow-sm overflow-hidden">
                 <div class="card-header bg-dark text-white py-3 px-4 d-flex justify-content-between align-items-center">
                     <span class="badge bg-light text-dark fw-bold">ID #{{ prenda.id }}</span>
-                    {% if prenda.disponible %}
-                        <span class="badge badge-soft-success px-3 py-1">Disponible para Venta</span>
-                    {% else %}
-                        <span class="badge badge-soft-danger px-3 py-1">No Disponible</span>
-                    {% endif %}
+                    <div>
+                        {% if prenda.activo %}
+                            <span class="badge bg-primary text-white me-1 px-2 py-1">Activo</span>
+                        {% else %}
+                            <span class="badge bg-secondary text-white me-1 px-2 py-1">Inactivo</span>
+                        {% endif %}
+                        {% if prenda.disponible %}
+                            <span class="badge badge-soft-success px-3 py-1">Disponible para Venta</span>
+                        {% else %}
+                            <span class="badge badge-soft-danger px-3 py-1">No Disponible</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="card-body p-4 bg-white">
                     <h2 class="h3 fw-bold text-dark mb-1">{{ prenda.nombre }}</h2>
