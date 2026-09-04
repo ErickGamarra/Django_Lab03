@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}UrbanTrend — {{ titulo }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'logistics:index' %}" class="text-decoration-none">Logística</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'logistics:categoria_list' %}" class="text-decoration-none">Categorías</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ titulo }}</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
+                <i class="bi bi-tag-fill text-info fs-5"></i>
+                <h5 class="card-title fw-bold mb-0">{{ titulo }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">
+                    Registre una nueva familia maestra de insumos. Esta categoría servirá de contenedor (1:N) para vincular materiales textiles en el catálogo.
+                </p>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            {% for error in form.non_field_errors %}
+                                <div><i class="bi bi-exclamation-octagon me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Nombre de Categoría -->
+                    <div class="mb-3">
+                        <label for="{{ form.nombre.id_for_label }}" class="form-label fw-semibold">
+                            Nombre de la Categoría <span class="text-danger">*</span>
+                        </label>
+                        {{ form.nombre }}
+                        {% if form.nombre.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">Debe ser único en el sistema (ej. Telas e Hilados, Avíos y Fornituras).</div>
+                    </div>
+
+                    <!-- Descripción Técnica -->
+                    <div class="mb-3">
+                        <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-semibold">
+                            Descripción Técnica (Opcional)
+                        </label>
+                        {{ form.descripcion }}
+                        {% if form.descripcion.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.descripcion.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{% url 'logistics:categoria_list' %}" class="btn btn-outline-secondary px-4">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-info text-white px-4 shadow-sm">
+                            <i class="bi bi-save me-1"></i> Crear Categoría
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

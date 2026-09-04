@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}UrbanTrend — {{ titulo }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'logistics:index' %}" class="text-decoration-none">Logística</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'logistics:proveedor_list' %}" class="text-decoration-none">Proveedores</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ titulo }}</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
+                <i class="bi bi-building-add text-success fs-5"></i>
+                <h5 class="card-title fw-bold mb-0">{{ titulo }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">
+                    Ingrese la información fiscal y de contacto del socio comercial. El RUC debe contar exactamente con 11 dígitos numéricos.
+                </p>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            {% for error in form.non_field_errors %}
+                                <div><i class="bi bi-exclamation-octagon me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- RUC -->
+                    <div class="mb-3">
+                        <label for="{{ form.ruc.id_for_label }}" class="form-label fw-semibold">
+                            Número de RUC <span class="text-danger">*</span>
+                        </label>
+                        {{ form.ruc }}
+                        {% if form.ruc.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.ruc.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">Debe contener exactamente 11 dígitos y ser único.</div>
+                    </div>
+
+                    <!-- Razón Social -->
+                    <div class="mb-3">
+                        <label for="{{ form.razon_social.id_for_label }}" class="form-label fw-semibold">
+                            Razón Social / Denominación Comercial <span class="text-danger">*</span>
+                        </label>
+                        {{ form.razon_social }}
+                        {% if form.razon_social.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.razon_social.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Teléfono -->
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.telefono.id_for_label }}" class="form-label fw-semibold">
+                                Teléfono de Contacto <span class="text-danger">*</span>
+                            </label>
+                            {{ form.telefono }}
+                            {% if form.telefono.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.telefono.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.correo.id_for_label }}" class="form-label fw-semibold">
+                                Correo Corporativo <span class="text-danger">*</span>
+                            </label>
+                            {{ form.correo }}
+                            {% if form.correo.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.correo.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{% url 'logistics:proveedor_list' %}" class="btn btn-outline-secondary px-4">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success px-4 shadow-sm">
+                            <i class="bi bi-save me-1"></i> Registrar Proveedor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

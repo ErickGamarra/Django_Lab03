@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}UrbanTrend — Inicio{% endblock %}
+
+{% block content %}
+<div class="py-5 text-center">
+    <h1 class="display-5 fw-bold text-dark mb-3">UrbanTrend Streetwear</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 600px;">
+        Plataforma empresarial de catálogo de moda urbana y gestión logística integral con persistencia relacional en SQLite.
+    </p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'store:list' %}" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+            <i class="bi bi-shop me-2"></i> Ver Catálogo Público
+        </a>
+        <a href="{% url 'logistics:index' %}" class="btn btn-dark px-4 py-2 rounded-pill shadow-sm">
+            <i class="bi bi-box-seam me-2"></i> Módulo de Logística
+        </a>
+    </div>
+    {% if items %}
+    <div class="mt-4 d-none">
+        {% for item in items %}
+            <span>{{ item.name }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

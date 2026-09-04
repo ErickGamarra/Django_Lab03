@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}UrbanTrend — {{ titulo }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'logistics:index' %}" class="text-decoration-none">Logística</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'logistics:material_list' %}" class="text-decoration-none">Materiales</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ titulo }}</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
+                <i class="bi bi-pencil-square text-primary fs-5"></i>
+                <h5 class="card-title fw-bold mb-0">{{ titulo }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">
+                    Complete la información técnica del insumo textil. Los campos marcados con asterisco son obligatorios y serán persistidos en la base de datos SQLite.
+                </p>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger mb-3">
+                            {% for error in form.non_field_errors %}
+                                <div><i class="bi bi-exclamation-octagon me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Categoría (ForeignKey) -->
+                    <div class="mb-3">
+                        <label for="{{ form.categoria.id_for_label }}" class="form-label fw-semibold">
+                            Categoría Asignada (Relación 1:N) <span class="text-danger">*</span>
+                        </label>
+                        {{ form.categoria }}
+                        {% if form.categoria.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.categoria.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Seleccione la familia de insumo. Si no encuentra la categoría deseada, puede 
+                            <a href="{% url 'logistics:categoria_create' %}" target="_blank" class="text-decoration-none">crear una nueva aquí</a>.
+                        </div>
+                    </div>
+
+                    <!-- Nombre del Insumo -->
+                    <div class="mb-3">
+                        <label for="{{ form.nombre.id_for_label }}" class="form-label fw-semibold">
+                            Nombre del Insumo / Denominación <span class="text-danger">*</span>
+                        </label>
+                        {{ form.nombre }}
+                        {% if form.nombre.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Unidad de Medida -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.unidad_medida.id_for_label }}" class="form-label fw-semibold">
+                                Unidad de Medida <span class="text-danger">*</span>
+                            </label>
+                            {{ form.unidad_medida }}
+                            {% if form.unidad_medida.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.unidad_medida.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Precio Unitario -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.precio_unitario.id_for_label }}" class="form-label fw-semibold">
+                                Precio Unitario (S/) <span class="text-danger">*</span>
+                            </label>
+                            {{ form.precio_unitario }}
+                            {% if form.precio_unitario.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.precio_unitario.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Debe ser mayor a 0.00</div>
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.stock.id_for_label }}" class="form-label fw-semibold">
+                                Stock Inicial <span class="text-danger">*</span>
+                            </label>
+                            {{ form.stock }}
+                            {% if form.stock.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.stock.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Solo enteros no negativos</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{% url 'logistics:material_list' %}" class="btn btn-outline-secondary px-4">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                            <i class="bi bi-save me-1"></i> Guardar Registro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

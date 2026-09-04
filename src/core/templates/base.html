@@ -64,7 +64,7 @@
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'store:list' %}">
                 <i class="bi bi-shop text-primary fs-4"></i>
-                <span>UrbanTrend <span class="badge bg-primary text-uppercase fs-6">Lab 02</span></span>
+                <span>UrbanTrend <span class="badge bg-primary text-uppercase fs-6">Lab 03</span></span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
@@ -74,8 +74,13 @@
             <div class="collapse navbar-collapse" id="navMain">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-2 mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active fw-medium px-3" href="{% url 'store:list' %}">
+                        <a class="nav-link fw-medium px-3" href="{% url 'store:list' %}">
                             <i class="bi bi-grid-fill me-1"></i> Catálogo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3 text-info" href="{% url 'logistics:index' %}">
+                            <i class="bi bi-box-seam-fill me-1"></i> Logística & Insumos
                         </a>
                     </li>
                     <li class="nav-item">
@@ -90,6 +95,18 @@
 
     <!-- Contenido Principal -->
     <main class="main-wrapper">
+        {% if messages %}
+            <div class="container-fluid px-0 mb-4">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
@@ -97,7 +114,7 @@
     <!-- Pie de página -->
     <footer class="bg-white border-top py-3 mt-auto">
         <div class="container text-center text-muted small">
-            <span>UrbanTrend Streetwear &copy; 2026 — Django MVT con Persistencia en Memoria RAM</span>
+            <span>UrbanTrend Streetwear &copy; 2026 — Django ORM & SQLite Persistente (Lab 03)</span>
         </div>
     </footer>
 

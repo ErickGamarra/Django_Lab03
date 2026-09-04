@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}UrbanTrend — Catálogo de Insumos y Materiales{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'logistics:index' %}" class="text-decoration-none">Logística</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Materiales e Insumos</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1 text-slate-800">Catálogo de Materiales e Insumos</h1>
+        <p class="text-muted small mb-0">Entidad dependiente (1:N) vinculada a Categoría mediante ForeignKey con eliminación en cascada.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'logistics:material_create' %}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Registrar Insumo
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 bg-white">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-boxes text-primary fs-5"></i>
+            <h5 class="card-title fw-bold mb-0">Listado General de Insumos (READ - SELECT)</h5>
+        </div>
+        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill px-3">
+            {{ materiales|length }} registro{{ materiales|length|pluralize }}
+        </span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" class="ps-3" style="width: 60px;"># ID</th>
+                    <th scope="col">Insumo / Denominación</th>
+                    <th scope="col">Categoría (FK)</th>
+                    <th scope="col">Unidad de Medida</th>
+                    <th scope="col">Costo Unitario</th>
+                    <th scope="col">Stock en Almacén</th>
+                    <th scope="col" class="text-end pe-3" style="width: 140px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in materiales %}
+                <tr>
+                    <td class="ps-3 text-muted"><code>#{{ m.id }}</code></td>
+                    <td class="fw-semibold text-dark">
+                        <i class="bi bi-box-seam me-1 text-secondary"></i>
+                        {{ m.nombre }}
+                    </td>
+                    <td>
+                        <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
+                            <i class="bi bi-tag-fill me-1"></i>{{ m.categoria.nombre }}
+                        </span>
+                    </td>
+                    <td><code>{{ m.unidad_medida }}</code></td>
+                    <td class="fw-semibold text-slate-700">S/ {{ m.precio_unitario }}</td>
+                    <td>
+                        {% if m.stock > 0 %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                <i class="bi bi-check-circle me-1"></i>{{ m.stock }} unid.
+                            </span>
+                        {% else %}
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                                <i class="bi bi-exclamation-triangle me-1"></i>Agotado
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end pe-3">
+                        <div class="btn-group btn-group-sm">
+                            <a href="{% url 'logistics:material_update' m.pk %}" class="btn btn-outline-primary" title="Editar Material">
+                                <i class="bi bi-pencil-square me-1"></i> Editar
+                            </a>
+                            <a href="{% url 'logistics:material_delete' m.pk %}" class="btn btn-outline-danger" title="Eliminar Material">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                        No hay insumos textiles registrados en el sistema.
+                        <div class="mt-3">
+                            <a href="{% url 'logistics:material_create' %}" class="btn btn-sm btn-primary rounded-pill">
+                                <i class="bi bi-plus-circle me-1"></i> Registrar el primer insumo
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
